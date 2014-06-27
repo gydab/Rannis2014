@@ -26,10 +26,11 @@ drop table ÍSTARF95
 
 CREATE TABLE [Staða í skipuriti]
 (
-	ID INT IDENTITY, 
+	ID INT IDENTITY PRIMARY KEY, 
 	Heiti NVARCHAR(255) NOT NULL, 
 	Lýsing NVARCHAR(255), 
 )
+drop table [Staða í skipuriti]
 
 CREATE TABLE Starf
 (
@@ -39,6 +40,7 @@ CREATE TABLE Starf
 	Menntunarkröfur INT, 
 	Deild INT,
 	FOREIGN KEY (Starfanúmer) REFERENCES Ístarf95 (Starfanúmer),
+	FOREIGN KEY ([Staða í skipuriti]) REFERENCES [dbo].[Staða í skipuriti](ID),
 	FOREIGN KEY (Menntunarkröfur) REFERENCES Menntunarstig(Stig),
 	FOREIGN KEY (Deild) REFERENCES Deild(ID),
 )
@@ -68,16 +70,7 @@ CREATE TABLE Hæfni
 	Lýsing NVARCHAR(255),
 )
 
-CREATE TABLE Hæfnikröfur
-(
-	ID INT IDENTITY, 
-	Starf INT NOT NULL, 
-	Hæfni INT NOT NULL, 
-	Einkunn INT NOT NULL, 
-	FOREIGN KEY (Starf) REFERENCES Starf(ID),
-	FOREIGN KEY (Hæfni) REFERENCES Hæfni(ID),
-)
-drop table Hæfnikröfur
+
 
 CREATE TABLE Fyrirtæki 
 (
@@ -112,6 +105,16 @@ CREATE TABLE Umbun
 )
 
 -- TENGI TÖFLUR
+CREATE TABLE Hæfnikröfur
+(
+	ID INT IDENTITY, 
+	Starf INT NOT NULL, 
+	Hæfni INT NOT NULL, 
+	Einkunn INT NOT NULL, 
+	FOREIGN KEY (Starf) REFERENCES Starf(ID),
+	FOREIGN KEY (Hæfni) REFERENCES Hæfni(ID),
+)
+drop table Hæfnikröfur
 
 CREATE TABLE [Starfar]
 (
@@ -125,7 +128,18 @@ CREATE TABLE [Starfar]
 	FOREIGN KEY (Starf) REFERENCES Starf(ID),
 )
 
+drop table Starfar
 
+CREATE TABLE [Fær greitt]
+(
+	ID INT IDENTITY PRIMARY KEY,
+	Starfsmaður INT, 
+	Umbun INT, 
+	Upphæð INT,
+	Dagsetning DATE, 
+	FOREIGN KEY (Starfsmaður) REFERENCES Starfsmaður(ID), 
+	FOREIGN KEY (Umbun) REFERENCES Umbun(ID),
+)
 
 --insert into Ístarf95
 --Select * FROM ÍSTARF95_2#útgáfa$;
